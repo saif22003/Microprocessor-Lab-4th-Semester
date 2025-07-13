@@ -1,0 +1,56 @@
+.MODEL SMALL
+.STACK 100H
+.DATA
+ VALUE1 DB ?
+ VALUE2 DB ?
+ TEXT1 DB 'ENTER FIRST NUMBER: $'
+ TEXT2 DB 10,13,'ENTER SECOND NUMBER: $'
+ TEXT3 DB 10,13,'THE SMALL NUMBER IS: $'
+.CODE
+
+MAIN PROC
+    MOV AX,@DATA
+    MOV DS,AX
+    
+    MOV AH,09
+    LEA DX,TEXT1
+    INT 21H
+    
+    MOV AH,01
+    INT 21H 
+    MOV VALUE1,AL
+    
+    MOV AH,09
+    LEA DX,TEXT2
+    INT 21H
+    
+    MOV AH,01
+    INT 21H 
+    MOV VALUE2,AL
+    MOV BL,AL
+    
+    MOV AH,09
+    LEA DX,TEXT3
+    INT 21H
+    
+    CMP VALUE1,BL
+    JLE S1
+    JG S2
+    S1:
+      MOV AH,02
+      MOV DL,VALUE1
+      INT 21H
+      JMP EXIT
+    
+    S2:  
+      MOV AH,02
+      MOV DL,VALUE2
+      INT 21H   
+    EXIT:
+      MOV AH,4CH
+      INT 21H
+      MAIN ENDP
+END MAIN
+    
+    
+    

@@ -1,0 +1,42 @@
+.MODEL SMALL
+.STACK 100H
+.DATA
+  VALUE1 DB ?
+  VALUE2 DB ?
+  TEXT1 DB 'ENTER TWO INTEGERS: $'
+  TEXT2 DB 10,13,'SUM OF THE INTEGERS: $' 
+.CODE
+MAIN PROC
+    MOV AX,@DATA
+    MOV DS,AX
+    
+    MOV AH,09
+    LEA DX,TEXT1
+    INT 21H
+    
+    MOV AH,01
+    INT 21H
+    SUB AL,30H
+    MOV VALUE1,AL
+    
+    INT 21H
+    SUB AL,30H
+    MOV VALUE2,AL
+    MOV BL,AL
+    
+    ADD VALUE1,BL
+    ADD VALUE1,30H 
+    
+    MOV AH,09
+    LEA DX,TEXT2
+    INT 21H
+    
+    MOV DL,VALUE1
+    
+    MOV AH,02
+    INT 21H
+    
+    MOV AH,4CH
+    INT 21H
+    MAIN ENDP 
+END MAIN

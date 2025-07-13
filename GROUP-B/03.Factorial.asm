@@ -1,0 +1,34 @@
+.MODEL SMALL
+.STACK 100H
+.DATA
+  MSG DB 'THE FACTORIAL OF THE NMUMBER 3 IS: $'
+  VALUE DB ?
+.CODE
+MAIN PROC
+    MOV AX,@DATA
+    MOV DS,AX
+    
+    MOV CL,3
+    MOV AL,1
+    FACTORIAL:
+     MUL CL
+     DEC CL
+     JNZ FACTORIAL 
+     
+    ADD AL,30H
+    MOV VALUE,AL 
+    
+    
+    MOV AH,09
+    LEA DX,MSG
+    INT 21H  
+    
+    
+    MOV AH,02
+    MOV DL,VALUE
+    INT 21H
+    
+    MOV AH,4CH
+    INT 21H
+    MAIN ENDP
+END MAIN

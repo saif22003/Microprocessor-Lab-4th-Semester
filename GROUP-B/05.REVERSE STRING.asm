@@ -1,0 +1,44 @@
+.MODEL SMALL
+.STACK 100H
+.DATA
+  STR_LEN DB 20, ? ,20 DUP ('$')
+  TEXT1 DB 'ENTER A STRING: $'
+  TEXT2 DB 10,13,'REVERSE STRING IS: $'
+.CODE
+MAIN PROC
+    MOV AX,@DATA
+    MOV DS,AX
+    
+    MOV AH,09
+    LEA DX,TEXT1
+    INT 21H
+    
+    LEA DX,STR_LEN
+    MOV AH,0AH
+    INT 21H
+    
+    MOV CL,[STR_LEN+1]
+    MOV CH,0
+    
+    LEA SI,STR_LEN+2
+    
+    ADD SI,CX
+    
+    MOV AH,09
+    LEA DX,TEXT2
+    INT 21H
+    
+    REVERSE:
+      DEC SI
+      MOV DL, [SI]
+      MOV AH,02
+      INT 21H
+      LOOP REVERSE
+    
+    MOV AH,4CH
+    INT 21H
+    MAIN ENDP 
+END MAIN
+
+
+
