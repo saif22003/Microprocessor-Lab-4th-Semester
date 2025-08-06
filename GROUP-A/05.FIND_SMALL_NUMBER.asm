@@ -1,3 +1,5 @@
+;Find smaller number from two input numbers
+
 .MODEL SMALL
 .STACK 100H
 .DATA

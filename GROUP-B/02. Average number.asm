@@ -1,3 +1,5 @@
+;Average number 
+
 .MODEL SMALL
 .STACK 100H
 .DATA

@@ -1,0 +1,52 @@
+.MODEL SMALL
+.STACK 100H
+.DATA
+    VALUE DB ?                      
+    MSG1  DB 'ENTER A CHARACTER: $'
+    MSG2  DB 10,13,'YOU ENTERED: $'
+    MSG3  DB 10,13,'PROGRAM IS TERMINATED $'
+
+.CODE
+MAIN PROC
+    MOV AX, @DATA
+    MOV DS, AX
+
+   
+    MOV AH, 09
+    LEA DX, MSG1
+    INT 21H
+
+    
+    MOV AH, 01
+    INT 21H
+    MOV VALUE, AL        
+
+    
+    CMP AL, 'Y'
+    JE  DISPLAY_CHARACTER
+
+    
+    CMP AL, 'y'
+    JE  DISPLAY_CHARACTER
+
+
+    MOV AH, 09
+    LEA DX, MSG3
+    INT 21H
+    JMP EXIT
+
+DISPLAY_CHARACTER:
+
+    MOV AH, 09
+    LEA DX, MSG2
+    INT 21H
+
+    MOV AH, 02
+    MOV DL, VALUE
+    INT 21H
+
+EXIT:
+    MOV AH, 4CH
+    INT 21H
+MAIN ENDP
+END MAIN

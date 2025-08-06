@@ -1,3 +1,5 @@
+;Add two decimal numbers
+
 .MODEL SMALL
 .STACK 100H
 .DATA
