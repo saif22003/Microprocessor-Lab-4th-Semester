@@ -2,74 +2,56 @@
 
 .MODEL SMALL
 .STACK 100H
-.DATA  
-  ARR DB 5 DUP (?)       
-  MSG1 DB 'ENTER 5 ELEMENTS: $'
-  MSG2 DB 10,13,'SORTED ELEMENTS (ASC): $'
+.DATA
+ARR DB 5,3,8,1,4  
+ARR_SIZE DB 5              
+MSG DB 10,13,"SORTED ARRAY: $"
 .CODE
-
 MAIN PROC
     MOV AX, @DATA
     MOV DS, AX
-
-    LEA DI, ARR       
-    MOV CX, 5  
-
+    
     MOV AH, 09
-    LEA DX, MSG1
-    INT 21H         
-
-INPUT_LOOP:
-    MOV AH, 01          
+    LEA DX, MSG
     INT 21H
+    
+    MOV CL, ARR_SIZE
+    DEC CL       
 
-    SUB AL, 30H         
-    MOV [DI], AL
-    INC DI
-    LOOP INPUT_LOOP
-
-    MOV CL, 5       
 OUTER_LOOP:
-    DEC CL
-    MOV SI, OFFSET ARR
-    MOV DL, CL     
+    MOV CH, CL         
+    LEA SI, ARR         
 
 INNER_LOOP:
     MOV AL, [SI]
     MOV BL, [SI+1]
     CMP AL, BL
-    JBE CHECK_NEXT     
-
+    JBE NO_SWAP  
     MOV [SI], BL
     MOV [SI+1], AL
 
-CHECK_NEXT:
+NO_SWAP:
     INC SI
-    DEC DL
-    JNZ INNER_LOOP
-    CMP CL, 1
-    JG OUTER_LOOP        
- 
-    MOV AH, 09
-    LEA DX, MSG2
-    INT 21H
+    DEC CH
+    JNZ INNER_LOOP 
 
-    MOV SI, OFFSET ARR
-    MOV CX, 5
+    DEC CL
+    JNZ OUTER_LOOP    
+    MOV Cl, ARR_SIZE
+    LEA SI, ARR
 
 PRINT_LOOP:
     MOV DL, [SI]
-    ADD DL, 30H          
+    ADD DL, 30H        
     MOV AH, 02
     INT 21H
 
-    MOV DL, 20H        
+    MOV DL, ' '         
     INT 21H
-
     INC SI
     LOOP PRINT_LOOP
 
     MOV AH, 4CH
     INT 21H
-    MAIN ENDP
+MAIN ENDP
 END MAIN
